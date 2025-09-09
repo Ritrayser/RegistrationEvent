@@ -10,4 +10,6 @@ class UserEvent extends Model
         'user_id',
         'event_id',
     ];
+
+    protected $table = 'user_event';
 }

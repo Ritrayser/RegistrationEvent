@@ -31,9 +31,6 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-        if (Gate::denies('isAdmin')) {
-        return response()->json(['message' => 'You dont have enough rights'], 403);
-    }   
         $event = Event::create($request->validated());
         return response()->json($event, 201);
     }
@@ -41,10 +38,8 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Event $event)
     {
-      
-        $event = Event::findOrFail($id);
         return response()->json($event);
     }
 
@@ -59,12 +54,8 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EventRequest $request, string $id)
+    public function update(EventRequest $request, Event $event)
     {
-        if (Gate::denies('isAdmin')) {
-        return response()->json(['message' => 'You dont have enough rights'], 403);
-    }   
-        $event = Event::findOrFail($id);
         $event->update($request->validated());
         return response()->json($event, 200);
     }
@@ -72,13 +63,12 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
         if (Gate::denies('isAdmin')) {
         return response()->json(['message' => 'You dont have enough rights'], 403);
     }   
-        $event = Event::findOrFail($id);
         $event->delete();
-        return response()->json(204);
+        return response()->json(['message' => 'Successfully removed'], 204);
     }
 }
