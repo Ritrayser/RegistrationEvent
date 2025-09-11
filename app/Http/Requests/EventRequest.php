@@ -29,6 +29,9 @@ class EventRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string|',
             'max_participants' => 'required|integer|min:1',
+            'event_start' => 'required',
+            'event_end' => 'required',
+            
         ];
     }
 }

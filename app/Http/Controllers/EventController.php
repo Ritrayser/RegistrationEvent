@@ -66,9 +66,9 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if (Gate::denies('isAdmin')) {
-        return response()->json(['message' => 'You dont have enough rights'], 403);
+        return response()->json([__('message.rights')], 403);
     }   
         $event->delete();
-        return response()->json(['message' => 'Successfully removed'], 204);
+        return response()->json([__('message.removed')], 204);
     }
 }

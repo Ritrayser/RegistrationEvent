@@ -11,6 +11,8 @@ class Event extends Model
         'title',
         'description',
         'max_participants',
+        'event_start',
+        'event_end',
 
     ];
     public function users(): BelongsToMany

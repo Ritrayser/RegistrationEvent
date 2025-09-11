@@ -7,7 +7,8 @@ use App\Models\User;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserLoginRequest;
 use Illuminate\Support\Facades\Hash;
-use League\Config\Exception\ValidationException;
+use Illuminate\Validation\ValidationException;
+
 
 class AuthController extends Controller
 {
@@ -32,7 +33,7 @@ class AuthController extends Controller
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
-            'email' => ['Указанные данные неверны.'],
+            'email' => [__('message.incorrect')],
         ]);
     }
 

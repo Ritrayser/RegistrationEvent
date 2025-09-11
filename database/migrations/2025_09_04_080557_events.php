@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->unsignedInteger('max_participants');
+            $table->dateTime('event_start');
+            $table->dateTime('event_end');
         });
     }
 

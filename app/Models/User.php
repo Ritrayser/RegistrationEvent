@@ -33,6 +33,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pivot'
     ];
 
     /**
@@ -52,4 +53,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Event::class, 'user_event', 'user_id', 'event_id');
     }
+    
 }

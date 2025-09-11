@@ -13,4 +13,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('event', EventController::class);
   Route::post('event/{event}/registor',  [UserToEventController::class, 'registor']);
   Route::post('event/{event}/cansel',  [UserToEventController::class, 'cansel']);
+  Route::post('event/{event}/participants', [UserToEventController::class, 'getParticipants']);
 });
