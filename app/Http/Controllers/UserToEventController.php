@@ -2,56 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegistrationCancelled;
+use App\Mail\RegistrationConfirmed;
 use App\Models\Event;
+use App\Services\EventService;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserToEventController extends Controller
 {
-    public function registor($eventId)
+    public function registor(Event $event, EventService $eventService)
     {
-        $userId = Auth::id();
 
-        $event = Event::findOrFail($eventId);
+        try {
+             $user = Auth::user();
 
-        if ($event->users->count() >= $event->max_participants)
-        {
-            return response()->json([__('message.vacant')], 400);
+             $eventService->registerUser($event, $user);
+
+            return response()->json([__('message.successfully')], 200 );
+        } catch(Exception $e)
+        { 
+            dd($e);
+            return response()->json($e->getMessage(), $e->getCode());
         }
-
-        if ($event->users()->where('user_id', $userId)->exists())
-            {
-                return response()->json([__('message.already')], 400);
-            }
-
-        $event->users()->attach($userId);
-
-        return response()->json([__('message.successfully')], 200 );
-
+       
 
     }
 
-    public function cansel($eventId)
+    public function cansel(Event $event, EventService $eventService)
     {
-        $userId = Auth::id();
+        try{
+            $user = Auth::user();
 
-        $event = Event::findOrFail($eventId);
+            $eventService->canselUser($event, $user);
 
-        if(!$event->users()->where('user_id', $userId)->exists())
+            return response()->json([__('message.cancelled')], 200);
+        } catch(Exception $e)
         {
-            return response()->json([__('message.for_this_event')], 400);
+            return response()->json($e->getMessage(), $e->getCode());
         }
-
-        $event->users()->detach($userId);
-
-        return response()->json([__('message.cancelled')], 200);
     }
 
-    public function getParticipants($eventId)
+    public function getParticipants(Event $event)
     {
-        $event = Event::findOrFail($eventId);
-
-        $participants = $event->users;
+        $participants = $event->user;
 
         return response()->json($participants);
     }

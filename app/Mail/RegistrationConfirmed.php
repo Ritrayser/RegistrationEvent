@@ -14,15 +14,15 @@ class RegistrationConfirmed extends Mailable
     use Queueable, SerializesModels;
 
     public $event;
-    public $users;
+    public $user;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($event, $users)
+    public function __construct($event, $user)
     {
         $this->event = $event;
-        $this->users = $users;
+        $this->user = $user;
     }
 
     /**
@@ -31,7 +31,7 @@ class RegistrationConfirmed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Подтверждение регистрации на мероприятие',
+            subject: 'Registration Confirmed',
         );
     }
 
@@ -41,7 +41,7 @@ class RegistrationConfirmed extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.registration_confirmed',
+            view: 'emails.registration_confirmed',
         );
     }
 

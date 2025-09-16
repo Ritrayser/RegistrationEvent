@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +15,15 @@ class RegistrationCancelled extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event;
+    public $user;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Event $event, User $user)
     {
-        //
+        $this->event = $event;
+        $this->user = $user;
     }
 
     /**
@@ -27,7 +32,7 @@ class RegistrationCancelled extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Cancelled',
+            subject: 'Registration Cancelled'
         );
     }
 
@@ -37,7 +42,7 @@ class RegistrationCancelled extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.registration_cancelled',
         );
     }
 
