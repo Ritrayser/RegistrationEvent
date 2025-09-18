@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-use App\Events\UserRigisterEvent;
+use App\Events\AdminCancelEvent;
+use App\Events\AdminRegisterEvent;
+use App\Events\UserRegisterEvent;
 use App\Events\UserCancelEvent;
 use App\Mail\RegistrationCancelled;
 use Illuminate\Support\Facades\Mail;
@@ -46,7 +48,9 @@ class EventService
 
         $event->users()->attach($user);
 
-        UserRigisterEvent::dispatch($event, $user);
+        UserRegisterEvent::dispatch($event, $user);
+
+        AdminRegisterEvent::dispatch($user, $event);
 
        
     }
@@ -61,5 +65,7 @@ class EventService
         $event->users()->detach($user );
 
         UserCancelEvent::dispatch($event, $user);
+
+        AdminCancelEvent::dispatch($user, $event);
     }
 }

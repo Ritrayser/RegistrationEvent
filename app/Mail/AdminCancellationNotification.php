@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +15,18 @@ class AdminCancellationNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public User $user;
+    public Event $event;
+    public string $cancellationTime;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(User $user, Event $event, string $cancellationTime)
     {
-        //
+        $this->user = $user;
+        $this->event = $event;
+        $this->cancellationTime = $cancellationTime;
     }
 
     /**
@@ -37,7 +45,7 @@ class AdminCancellationNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.admin_cancellation_notification',
         );
     }
 
