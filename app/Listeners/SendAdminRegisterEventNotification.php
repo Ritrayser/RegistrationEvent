@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\AdminRegisterEvent;
+use App\Jobs\SendEmailNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Models\User;
@@ -30,6 +31,7 @@ class SendAdminRegisterEventNotification
 
         $registrationTime = Carbon::now()->toDateTimeString();
 
-        Mail::to($admin->email)->send(new AdminRegistrationNotification($event->user, $event->event, $registrationTime));
+        $mail = (new AdminRegistrationNotification($event->user, $event->event, $registrationTime));
+        SendEmailNotification::dispatch($mail, $admin->email);
     }
 }

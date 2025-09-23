@@ -17,7 +17,7 @@ class UserRegisterEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Event $createdEvent;
-    public User $user; 
+    public User $user;
 
     /**
      * Create a new event instance.

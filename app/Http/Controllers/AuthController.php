@@ -13,23 +13,22 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function register (UserRegisterRequest $request, AuthService $authService)
-{
- 
-    $user = $authService->register(name: $request->name, password: $request->password, email: $request->email);
+    public function register(UserRegisterRequest $request, AuthService $authService)
+    {
 
-    $token = $user->createToken('auth_token');
+        $user = $authService->register(name: $request->name, password: $request->password, email: $request->email);
 
-    return response()->json(['token' => $token->plainTextToken], 201);
-}
+        $token = $user->createToken('auth_token');
 
-    public function login (UserLoginRequest $request, AuthService $authService)
-{
-    $user = $authService->login(password: $request->password, email: $request->email);
+        return response()->json(['token' => $token->plainTextToken], 201);
+    }
 
-    $token = $user->createToken('default');
+    public function login(UserLoginRequest $request, AuthService $authService)
+    {
+        $user = $authService->login(password: $request->password, email: $request->email);
 
-    return response()->json(['token' => $token->plainTextToken], 200);
-}
-    
+        $token = $user->createToken('default');
+
+        return response()->json(['token' => $token->plainTextToken], 200);
+    }
 }

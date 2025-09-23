@@ -17,7 +17,7 @@ class UserCancelEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Event $cancelEvent;
-    public User $user; 
+    public User $user;
 
     /**
      * Create a new event instance.

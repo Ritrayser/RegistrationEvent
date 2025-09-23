@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Mail\RegistrationCancelled;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendEmailNotification;
 
 class SendUserCancelEventNotification
 {
@@ -23,6 +24,7 @@ class SendUserCancelEventNotification
      */
     public function handle(UserCancelEvent $event): void
     {
-        Mail::to($event->user->email)->send(new RegistrationCancelled($event->cancelEvent, $event->user));
+        $mail = (new RegistrationCancelled($event->cancelEvent, $event->user));
+        SendEmailNotification::dispatch($mail, $event->user->email);
     }
 }

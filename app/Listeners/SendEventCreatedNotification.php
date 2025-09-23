@@ -6,24 +6,22 @@ use App\Events\UserRegisterEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
-use App\Models\User;
 use App\Mail\RegistrationConfirmed;
+use App\Jobs\SendEmailNotification;
 
 class SendEventCreatedNotification
 {
     /**
      * Create the event listener.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct() {}
 
     /**
      * Handle the event.
      */
     public function handle(UserRegisterEvent $event): void
     {
-        Mail::to($event->user->email)->send(new RegistrationConfirmed($event->createdEvent, $event->user));
+        $mail = new RegistrationConfirmed($event->createdEvent, $event->user);
+        SendEmailNotification::dispatch($mail, $event->user->email);
     }
 }

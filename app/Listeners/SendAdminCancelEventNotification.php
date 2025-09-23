@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminCancellationNotification;
+use App\Jobs\SendEmailNotification;
 
 class SendAdminCancelEventNotification
 {
@@ -29,6 +30,7 @@ class SendAdminCancelEventNotification
 
         $cancellationTime = Carbon::now()->toDateTimeString();
 
-        Mail::to($admin->email)->send(new AdminCancellationNotification($event->user, $event->event, $cancellationTime));
+        $mail = (new AdminCancellationNotification($event->user, $event->event, $cancellationTime));
+        SendEmailNotification::dispatch($mail, $admin->email);
     }
 }

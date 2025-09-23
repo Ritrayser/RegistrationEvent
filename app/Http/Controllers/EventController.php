@@ -61,11 +61,11 @@ class EventController extends Controller
     {
         if (Gate::denies('isAdmin')) {
             return response()->json([__('message.rights')], 403);
-        }   
+        }
         $eventService->deleteEvent($event);
         return response()->json([
-           "status" => true,
-           'message' =>  __('message.removed')
+            "status" => true,
+            'message' =>  __('message.removed')
         ], Response::HTTP_OK);
     }
 }

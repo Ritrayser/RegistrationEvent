@@ -12,19 +12,16 @@ use App\Models\User;
 use App\Models\Event;
 use Exception;
 
-class EventService 
-{   
-    public function __construct()
-    {
-        
-    }
+class EventService
+{
+    public function __construct() {}
 
     public function createEvent(array $eventData): Event
     {
-       return Event::create($eventData); 
+        return Event::create($eventData);
     }
 
-    public function updateEvent (array $eventData, Event $event): Event
+    public function updateEvent(array $eventData, Event $event): Event
     {
         return $event->update($eventData);
     }
@@ -36,33 +33,28 @@ class EventService
 
     public function registerUser(Event $event, User $user)
     {
-         if ($event->users->count() >= $event->max_participants)
-        {
+        if ($event->users->count() >= $event->max_participants) {
             throw new Exception(__('message.vacant'), 400);
         }
 
-        if ($event->users()->where('user_id', $user->id)->exists())
-            {
-                throw new Exception(__('message.already'), 400);
-            }
+        if ($event->users()->where('user_id', $user->id)->exists()) {
+            throw new Exception(__('message.already'), 400);
+        }
 
         $event->users()->attach($user);
 
         UserRegisterEvent::dispatch($event, $user);
 
         AdminRegisterEvent::dispatch($user, $event);
-
-       
     }
 
     public function cancelUser(Event $event, User $user)
     {
-        if(!$event->users()->where('user_id', $user->id)->exists())
-        {
+        if (!$event->users()->where('user_id', $user->id)->exists()) {
             throw new Exception(__('message.for_this_event'), 400);
         }
 
-        $event->users()->detach($user );
+        $event->users()->detach($user);
 
         UserCancelEvent::dispatch($event, $user);
 

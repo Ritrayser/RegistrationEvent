@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'title',
         'description',
         'max_participants',
@@ -17,6 +18,6 @@ class Event extends Model
     ];
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, UserEvent::class, 'event_id','user_id',)->withTimestamps();
+        return $this->belongsToMany(User::class, UserEvent::class, 'event_id', 'user_id',)->withTimestamps();
     }
 }
